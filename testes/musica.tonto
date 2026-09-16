@@ -1,7 +1,6 @@
 package Musica
 
 datatype duracaoDataType specializes number
-
 datatype notaMusicalDataType {
     tom: string
     sustenida: boolean
