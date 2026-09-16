@@ -1,0 +1,41 @@
+package Musica
+
+datatype duracaoDataType specializes number
+
+datatype notaMusicalDataType {
+    tom: string
+    sustenida: boolean
+    duracao: duracaoDataType
+    posicao: number
+}
+
+datatype assinaturaTempoDataType {
+    numerador: number
+    denominador: number
+}
+
+kind Compasso {
+    assinaturaTempo: assinaturaTempoDataType
+    notas: notaMusicalDataType [0..*]
+}
+
+collective Partitura {
+    @componentOf
+    [1] <>-- [1..*] Compasso
+}
+
+kind Musica {
+    nome: string
+    compositor: string
+    publicacao: date
+    duracao: time
+}
+relation Musica [1] -- [1] Partitura
+
+phaseMixin ParteDaMusica
+phase Introducao specializes Musica, ParteDaMusica
+phase Verso specializes Musica, ParteDaMusica
+phase Refrao specializes Musica, ParteDaMusica
+phase Ponte specializes Musica, ParteDaMusica
+
+complete genset PartesDaMusica where Introducao, Verso, Refrao, Ponte specializes Musica

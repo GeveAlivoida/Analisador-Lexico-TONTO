@@ -1,0 +1,89 @@
+package BandasCerto
+
+import Musica
+
+category Instrumento of functional-complexes, collectives {
+    nome: string
+    descricao: string
+    eletrico: boolean
+    cor: Cor
+}
+
+enum Cor {
+    Preto,
+    Branco,
+    Vermelho
+}
+
+kind InstrumentoCordas specializes Instrumento
+kind InstrumentoSopro specializes Instrumento
+kind InstrumentoPercussao specializes Instrumento
+
+subkind Violao specializes InstrumentoCordas
+subkind Guitarra specializes InstrumentoCordas
+subkind Flauta specializes InstrumentoSopro
+subkind Saxofone specializes InstrumentoSopro
+subkind Bateria specializes InstrumentoPercussao
+
+kind Pessoa {
+    nome: string
+    idade: number
+    vivo: boolean
+}
+
+subkind Musico specializes Pessoa
+
+roleMixin Instrumentista
+
+role Vocalista specializes Musico
+role Guitarrista specializes Musico, Instrumentista
+role Baterista specializes Musico, Instrumentista
+
+historicalRoleMixin Aposentado
+historicalRole MusicoAposentado specializes Musico, Aposentado
+
+quality AnosDeExperiencia
+mode HabilidadeMusical
+intrinsicMode Destreza
+extrinsicMode TrabalhoEmEquipe
+
+type MusicoPorInstrumentoTocado
+disjoint genset TipoDeMusico {
+    general Musico
+    categorizer MusicoPorInstrumentoTocado
+    specifics Vocalista, Guitarrista, Baterista
+}
+
+kind Banda {
+    nome: string
+    @memberOf
+    [1] <>-- [1..*] Musico
+}
+
+kind Distribuidora
+@mediation
+relation Banda [1..*] -- temContratoCom -- [1] Distribuidora
+
+@characterization
+relation Musico [1] -- temExperiencia -- [1] AnosDeExperiencia
+
+@material
+relation Musico [1] -- toca -- [1..*] Instrumento
+
+event Apresentacao
+@formal
+relation Banda [1] -- faz -- [1..*] Apresentacao
+
+@historicalDependence
+relation Musico [1] -- foiMembroDe -- [0..*] Banda
+
+kind Disco {
+    banda: string
+    avaliacoes: number [0..*]
+    nota: number { derived }
+    numFaixas: number { const }
+    faixas: string [1..*] { ordered }
+}
+
+kind Violao1 (instanceOf Violao)
+kind banda02 (instanceOf Banda)
