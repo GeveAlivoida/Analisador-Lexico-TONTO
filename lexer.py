@@ -13,50 +13,60 @@ tokens = (
     'TIPO_NATIVO',
     'NOVO_TIPO',
     'META_ATRIBUTO',
+    'NUMERO',
+    'ERRO',
 )
 
 # Regras para reconhecer os símbolos
+
+
 
 def t_SIMBOLO(t):
     r'\.\.|<>--|--<>|\{|\}|\(|\)|\[|\]|\*|@|:'
     return t
 
 def t_ESTEREOTIPO_CLASSE(t):
-    r'event|situation|process|category|mixin|phaseMixin|roleMixin|historicalRoleMixin|kind|collective|quantity|quality|mode|intrisicMode|extrinsicMode|subkind|phase|role|historicalRole'
+    r'(?:event|situation|process|category|mixin|phaseMixin|roleMixin|historicalRoleMixin|kind|collective|quantity|quality|mode|intrisicMode|extrinsicMode|subkind|phase|role|historicalRole)(?![a-zA-Z0-9_])'
     return t 
 
 def t_ESTEREOTIPO_RELACAO(t):
-    r'material|derivation|comparative|mediation|characterization|externalDependence|subCollectionOf|subQualityOf|componentOf|instantiation|memberOf|termination|participational|participation|historicalDependence|creation|manifestation|bringsAbout|triggers|composition|aggregation|inherence|value|formal|constitution'
+    r'(?:material|derivation|comparative|mediation|characterization|externalDependence|subCollectionOf|subQualityOf|componentOf|instantiation|memberOf|termination|participational|participation|historicalDependence|creation|manifestation|bringsAbout|triggers|composition|aggregation|inherence|value|formal|constitution)(?![a-zA-Z0-9_])'
     return t 
 
 def t_PALAVRA_RESERVADA(t):
-    r'genset|disjoint|complete|general|specifics|where|package|import|functional-complexes'
+    r'(?:genset|disjoint|complete|general|specifics|where|package|import|functional-complexes)(?![a-zA-Z0-9_])'
     return t
 
 def t_TIPO_NATIVO(t):
-    r'number|string|boolean|date|time|datetime'
+    r'(?:number|string|boolean|date|time|datetime)(?![a-zA-Z0-9_])'
     return t
-
 
 def t_META_ATRIBUTO(t):
-    r'ordered|const|derived|subsets|redefines'
+    r'(?:ordered|const|derived|subsets|redefines)(?![a-zA-Z0-9_])'
     return t
 
-
-def NOVO_TIPO(t):
-    r'[A-Za-z_]+Datatype'
-    return t
-
-def t_CLASSE(t):
-    r'[A-Z][A-Za-z_]*'
-    return t
-
-def t_RELACAO(t):
-    r'[a-z][A-Za-z_]*'
+def t_NOVO_TIPO(t):
+    r'[A-Za-z]+DataType(?![a-zA-Z0-9_])'
     return t
 
 def t_INSTANCIA(t):
-    r'[a-z][A-Za-z_]*'
+    r'[a-zA-Z][A-Za-z_]*[0-9]+(?![a-zA-Z0-9_])' 
+    return t
+
+def t_CLASSE(t):
+    r'[A-Z][A-Za-z_]*(?![a-zA-Z0-9_])'
+    return t
+
+def t_RELACAO(t):
+    r'[a-z][A-Za-z_]*(?![a-zA-Z0-9_])'
+    return t
+
+def t_NUMERO(t):
+    r'[0-9]+(?![a-zA-Z0-9_])'
+    return t
+
+def t_ERRO(t):
+    r'[a-zA-Z0-9_][a-zA-Z0-9_]*[a-zA-Z0-9_](?![a-zA-Z0-9_])'
     return t
 
 
@@ -65,7 +75,8 @@ def t_INSTANCIA(t):
 t_ignore = ' \t'
 
 def t_error(t):
-    print(f"Caractere inválido: '{t.value[0]}'")
+    mensagem = f"| Caractere inválido: '{t.value[0]}'"
+    print(f"{mensagem:<72}|")
     t.lexer.skip(1)
 
 def t_NOVA_LINHA(t):
@@ -73,5 +84,4 @@ def t_NOVA_LINHA(t):
     t.lexer.lineno += len(t.value)
    
 # analisador lexico em ação 
-
 lexer = lex.lex()
