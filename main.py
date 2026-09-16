@@ -1,6 +1,13 @@
 from lexer import lexer
 
-# Dicionário que armazena a quantidade de tokens de cada tipo
+# Lista dos arquivos de teste TONTO a serem analisados, um de cada vez
+arquivos_teste = [
+    "testes/bandas_certo.tonto",
+    "testes/bandas_errado.tonto",
+    "testes/musica.tonto",
+]
+
+# Dicionário que armazena a quantidade de tokens de cada tipo (reiniciado a cada arquivo)
 tabela = {
     'SIMBOLO': 0,
     "ESTEREOTIPO_CLASSE": 0,
@@ -16,49 +23,50 @@ tabela = {
     "ERRO": 0,
 }
 
+for caminho_arquivo in arquivos_teste:
+    # Abrindo e lendo o arquivo de entrada
+    arquivo = open(caminho_arquivo, "r")
+    codigo = arquivo.read()
 
-# Abrindo e lendo o arquivo de entrada
-arquivo = open("testes/teste.tonto", "r")
-codigo = arquivo.read()
+    # Inicializando o analisador léxico
+    lexer.lineno = 1
+    lexer.input(codigo)
 
-# Inicializando o analisador léxico
-lexer.lineno = 1
-lexer.input(codigo)
+    # Variáveis que contam o número da linha e a coluna do token atual
+    contador = 0
+    linhaAnterior = 1
 
-# Variáveis que contam o número da linha e a coluna do token atual 
-contador = 0
-linhaAnterior = 1
+    # Cabeçalho identificando o arquivo em análise
+    print(f"\n############### ARQUIVO: {caminho_arquivo} ###############")
 
-# Laço do analizador léxico
-print("|=======================================================================|")
-print("|================== VISÃO ANALÍTICA DE TODOS OS TOKENS =================|")
-for token in lexer:
-    print("|-----------------------------------------------------------------------|")
-    
-    # Contador de colunas de uma linhas
-    if token.lineno == linhaAnterior:
-        contador += 1
-    else:
-        contador = 1
+    # Laço do analizador léxico
+    print("|=======================================================================|")
+    print("|================== VISÃO ANALÍTICA DE TODOS OS TOKENS =================|")
+    for token in lexer:
+        print("|-----------------------------------------------------------------------|")
 
-    # Atualiza a quantidade de tokens do tipo correto
-    if token.type in tabela:
-        tabela[token.type] += 1
-    
-    print(f"| Linha {token.lineno:<5}| Coluna {contador:<5}| {token.type:<20} → {token.value:<20}|")
-    linhaAnterior = token.lineno
-print("|=======================================================================|")
+        # Contador de colunas de uma linhas
+        if token.lineno == linhaAnterior:
+            contador += 1
+        else:
+            contador = 1
 
+        # Atualiza a quantidade de tokens do tipo correto
+        if token.type in tabela:
+            tabela[token.type] += 1
 
+        print(f"| Linha {token.lineno:<5}| Coluna {contador:<5}| {token.type:<20} → {token.value:<20}|")
+        linhaAnterior = token.lineno
+    print("|=======================================================================|")
 
-# Tabela de síntese dos tokens
-print("\n|======================================|")
-print("|========== TABELA DE SÍNTESE =========|")
-print("|--------------------------------------|")
-print("| Tipo                | Quantidade     |")
-for tipo, quantidade in tabela.items():
+    # Tabela de síntese dos tokens
+    print("\n|======================================|")
+    print("|========== TABELA DE SÍNTESE =========|")
     print("|--------------------------------------|")
-    print(f"| {tipo:<20}| {quantidade:<15}|")
-print("|--------------------------------------|")
+    print("| Tipo                | Quantidade     |")
+    for tipo, quantidade in tabela.items():
+        print("|--------------------------------------|")
+        print(f"| {tipo:<20}| {quantidade:<15}|")
+    print("|--------------------------------------|")
 
-arquivo.close()
+    arquivo.close()

@@ -1,9 +1,8 @@
-// Arquivo TOTALMENTE ERRADO para testes
 package BandasErrado
+// Arquivo TOTALMENTE ERRADO para testes
 
 pakage Banda                  // Erro: palavra-chave correta é package
-inport Musica                 // Erro: 'inport' ao invés de import
-import "Musica"               // Erro: import não aceita string
+import "Musica"               // Erro: string
 
 category 123Instrumento of functional-complexes, collectives {   // Erro: número ao início de nome de classe
     nome: string
@@ -21,4 +20,8 @@ kind _Musico // Erro: nome não pode começar com '_'
 
 relation Musico [1] -- toca_4 -- [1] 123Instrumento // Erro: nome de relação não pode ter números
 
-123456 // Número solto
+123456 // Número solto (não é erro)
+
+kind@material // Erro: palavras-chave concatenadas
+
+<->-- --- <..> [1...1] -1 // Erro: símbolos inválidos
