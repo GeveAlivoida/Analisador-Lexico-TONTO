@@ -22,7 +22,7 @@ tokens = (
 
 
 def t_SIMBOLO(t):
-    r'\.\.|<>--|--<>|\{|\}|\(|\)|\[|\]|\*|@|:'
+    r'\.\.|<>--|--<>|\{|\}|\(|\)|\[|\]|\*|@|:|--'
     return t
 
 def t_ESTEREOTIPO_CLASSE(t):

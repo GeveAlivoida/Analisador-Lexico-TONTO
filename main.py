@@ -7,23 +7,23 @@ arquivos_teste = [
     "testes/musica.tonto",
 ]
 
-# Dicionário que armazena a quantidade de tokens de cada tipo (reiniciado a cada arquivo)
-tabela = {
-    'SIMBOLO': 0,
-    "ESTEREOTIPO_CLASSE": 0,
-    "ESTEREOTIPO_RELACAO": 0,
-    "PALAVRA_RESERVADA": 0,
-    "CLASSE": 0,
-    "RELACAO": 0,
-    "INSTANCIA": 0,
-    "TIPO_NATIVO": 0,
-    "NOVO_TIPO": 0,
-    "META_ATRIBUTO": 0,
-    "NUMERO": 0,
-    "ERRO": 0,
-}
-
 for caminho_arquivo in arquivos_teste:
+    # Dicionário que armazena a quantidade de tokens de cada tipo (reiniciado a cada arquivo)
+    tabela = {
+        'SIMBOLO': 0,
+        "ESTEREOTIPO_CLASSE": 0,
+        "ESTEREOTIPO_RELACAO": 0,
+        "PALAVRA_RESERVADA": 0,
+        "CLASSE": 0,
+        "RELACAO": 0,
+        "INSTANCIA": 0,
+        "TIPO_NATIVO": 0,
+        "NOVO_TIPO": 0,
+        "META_ATRIBUTO": 0,
+        "NUMERO": 0,
+        "ERRO": 0,
+    }
+
     # Abrindo e lendo o arquivo de entrada
     arquivo = open(caminho_arquivo, "r")
     codigo = arquivo.read()
